@@ -1,0 +1,2513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Deepak — Creative Digital Designer</title>
+
+  <!-- =====================================================
+       FONTS
+  ====================================================== -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+
+  <!-- =====================================================
+       TAILWIND
+  ====================================================== -->
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+
+      theme: {
+
+        extend: {
+
+          fontFamily: {
+
+            sans: [
+              "Manrope",
+              "sans-serif"
+            ],
+
+            mono: [
+              "DM Mono",
+              "monospace"
+            ]
+
+          },
+
+          colors: {
+
+            blackish: "#050505",
+
+            paper: "#F1F0EA",
+
+            red: "#FF3B30",
+
+            green: "#B8FF3D"
+
+          }
+
+        }
+
+      }
+
+    };
+  </script>
+
+
+  <!-- =====================================================
+       GSAP
+  ====================================================== -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+
+  <!-- =====================================================
+       CUSTOM CSS
+  ====================================================== -->
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    body {
+
+      margin: 0;
+
+      background: #050505;
+
+      color: #F1F0EA;
+
+      overflow-x: hidden;
+
+      font-family: "Manrope", sans-serif;
+
+    }
+
+
+    ::selection {
+
+      background: #FF3B30;
+
+      color: #fff;
+
+    }
+
+
+    /* ===============================================
+       CURSOR
+    ================================================ */
+
+    .cursor {
+
+      position: fixed;
+
+      width: 12px;
+
+      height: 12px;
+
+      background: #B8FF3D;
+
+      border-radius: 50%;
+
+      pointer-events: none;
+
+      z-index: 9999;
+
+      mix-blend-mode: difference;
+
+      transform: translate(-50%, -50%);
+
+    }
+
+
+    /* ===============================================
+       GRAIN
+    ================================================ */
+
+    .grain {
+
+      position: fixed;
+
+      inset: 0;
+
+      pointer-events: none;
+
+      z-index: 900;
+
+      opacity: .035;
+
+      background-image:
+
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+    }
+
+
+    /* ===============================================
+       GRID
+    ================================================ */
+
+    .grid-lines {
+
+      background-image:
+
+        linear-gradient(
+          rgba(255,255,255,.045) 1px,
+          transparent 1px
+        ),
+
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,.045) 1px,
+          transparent 1px
+        );
+
+      background-size: 90px 90px;
+
+    }
+
+
+    /* ===============================================
+       BIG TEXT
+    ================================================ */
+
+    .display {
+
+      font-size: clamp(
+        4rem,
+        13vw,
+        13rem
+      );
+
+      line-height: .78;
+
+      letter-spacing: -.09em;
+
+      font-weight: 700;
+
+    }
+
+
+    /* ===============================================
+       CLIP REVEAL
+    ================================================ */
+
+    .clip-reveal {
+
+      clip-path: inset(
+        100% 0 0 0
+      );
+
+    }
+
+
+    /* ===============================================
+       PROJECT IMAGE
+    ================================================ */
+
+    .project-visual {
+
+      background:
+
+        radial-gradient(
+          circle at 50% 50%,
+          rgba(255,59,48,.35),
+          transparent 30%
+        ),
+
+        linear-gradient(
+          135deg,
+          #151515,
+          #070707
+        );
+
+    }
+
+
+    /* ===============================================
+       MARQUEE
+    ================================================ */
+
+    .marquee-track {
+
+      display: flex;
+
+      width: max-content;
+
+    }
+
+
+    /* ===============================================
+       HORIZONTAL SERVICE TEXT
+    ================================================ */
+
+    .service-word {
+
+      white-space: nowrap;
+
+      font-size: clamp(
+        5rem,
+        14vw,
+        14rem
+      );
+
+      line-height: .75;
+
+      letter-spacing: -.08em;
+
+    }
+
+
+    /* ===============================================
+       MAGNETIC
+    ================================================ */
+
+    .magnetic {
+
+      will-change: transform;
+
+    }
+
+
+    /* ===============================================
+       MOBILE
+    ================================================ */
+
+    @media(max-width: 768px) {
+
+      .cursor {
+        display: none;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     GLOBAL ELEMENTS
+====================================================== -->
+
+<div class="cursor"></div>
+
+<div class="grain"></div>
+
+
+
+<!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+<header
+  id="nav"
+  class="
+    fixed
+    top-0
+    left-0
+    w-full
+    z-[800]
+    px-5
+    md:px-8
+    py-5
+  "
+>
+
+  <nav
+    class="
+      max-w-[1600px]
+      mx-auto
+      flex
+      items-center
+      justify-between
+    "
+  >
+
+
+    <!-- LOGO -->
+
+    <a
+      href="#"
+      class="
+        flex
+        items-center
+        gap-3
+        font-bold
+        tracking-tight
+      "
+    >
+
+      <span
+        class="
+          w-9
+          h-9
+          border
+          border-white/20
+          flex
+          items-center
+          justify-center
+          rounded-full
+        "
+      >
+
+        D
+
+      </span>
+
+      <span>
+
+        DEEPAK
+
+      </span>
+
+    </a>
+
+
+    <!-- CENTER -->
+
+    <div
+      class="
+        hidden
+        lg:flex
+        items-center
+        gap-8
+        text-[10px]
+        uppercase
+        tracking-[.25em]
+        text-white/40
+      "
+    >
+
+      <a
+        href="#work"
+        class="hover:text-white transition"
+      >
+        Work
+      </a>
+
+      <a
+        href="#services"
+        class="hover:text-white transition"
+      >
+        Services
+      </a>
+
+      <a
+        href="#about"
+        class="hover:text-white transition"
+      >
+        About
+      </a>
+
+    </div>
+
+
+    <!-- CONTACT -->
+
+    <a
+      href="#contact"
+      class="
+        magnetic
+        flex
+        items-center
+        gap-3
+        text-xs
+        uppercase
+        tracking-[.18em]
+      "
+    >
+
+      <span class="hidden sm:block">
+        Let's talk
+      </span>
+
+      <span
+        class="
+          w-10
+          h-10
+          rounded-full
+          bg-red
+          text-white
+          flex
+          items-center
+          justify-center
+          hover:scale-110
+          transition
+        "
+      >
+
+        ↗
+
+      </span>
+
+    </a>
+
+  </nav>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN
+====================================================== -->
+
+<main>
+
+
+
+<!-- =====================================================
+     SECTION 01 — HERO
+====================================================== -->
+
+<section
+  id="hero"
+  class="
+    relative
+    min-h-screen
+    overflow-hidden
+    grid-lines
+    flex
+    items-center
+  "
+>
+
+  <!-- TOP LABEL -->
+
+  <div
+    class="
+      absolute
+      top-32
+      left-5
+      md:left-10
+      font-mono
+      text-[10px]
+      uppercase
+      tracking-[.25em]
+      text-white/30
+    "
+  >
+
+    Independent creative / 2026
+
+  </div>
+
+
+  <!-- ROTATING ELEMENT -->
+
+  <div
+    id="hero-circle"
+    class="
+      absolute
+      right-[8%]
+      top-[20%]
+      w-28
+      h-28
+      md:w-40
+      md:h-40
+      rounded-full
+      border
+      border-white/10
+      flex
+      items-center
+      justify-center
+    "
+  >
+
+    <div
+      class="
+        absolute
+        inset-3
+        rounded-full
+        border
+        border-dashed
+        border-green/40
+      "
+    ></div>
+
+    <span
+      class="
+        text-green
+        text-2xl
+      "
+    >
+      +
+    </span>
+
+  </div>
+
+
+  <!-- HERO CONTENT -->
+
+  <div
+    class="
+      relative
+      z-10
+      max-w-[1600px]
+      mx-auto
+      w-full
+      px-5
+      md:px-10
+      pt-40
+      pb-20
+    "
+  >
+
+
+    <div
+      class="
+        mb-10
+        flex
+        items-center
+        gap-4
+        text-xs
+        uppercase
+        tracking-[.2em]
+        text-white/35
+      "
+    >
+
+      <span
+        class="
+          w-2
+          h-2
+          rounded-full
+          bg-green
+        "
+      ></span>
+
+      Available for selected projects
+
+    </div>
+
+
+    <!-- TITLE -->
+
+    <div
+      class="
+        overflow-hidden
+      "
+    >
+
+      <h1
+        id="hero-title"
+        class="display"
+      >
+
+        DEEP<span class="text-red">AK.</span>
+
+      </h1>
+
+    </div>
+
+
+    <div
+      class="
+        overflow-hidden
+        ml-[10vw]
+        mt-5
+      "
+    >
+
+      <h2
+        id="hero-subtitle"
+        class="
+          display
+          text-white/20
+        "
+      >
+
+        DIGITAL
+
+      </h2>
+
+    </div>
+
+
+    <!-- BOTTOM HERO -->
+
+    <div
+      class="
+        mt-24
+        grid
+        md:grid-cols-[1fr_auto]
+        gap-10
+        items-end
+      "
+    >
+
+      <p
+        class="
+          max-w-xl
+          text-base
+          md:text-xl
+          leading-relaxed
+          text-white/45
+        "
+      >
+
+        I create identities, websites and digital
+        growth systems for brands that refuse
+        to look ordinary.
+
+      </p>
+
+
+      <a
+        href="#work"
+        class="
+          magnetic
+          group
+          flex
+          items-center
+          gap-5
+          uppercase
+          text-xs
+          tracking-[.2em]
+        "
+      >
+
+        Explore work
+
+        <span
+          class="
+            w-12
+            h-12
+            border
+            border-white/15
+            rounded-full
+            flex
+            items-center
+            justify-center
+            group-hover:bg-white
+            group-hover:text-black
+            transition
+          "
+        >
+
+          ↓
+
+        </span>
+
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <!-- HUGE BACKGROUND NUMBER -->
+
+  <div
+    class="
+      absolute
+      -bottom-20
+      -right-10
+      text-[35vw]
+      font-bold
+      leading-none
+      tracking-[-.1em]
+      text-white/[.025]
+      select-none
+    "
+  >
+
+    01
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 02 — SERVICES
+====================================================== -->
+
+<section
+  id="services"
+  class="
+    relative
+    min-h-screen
+    bg-paper
+    text-black
+    overflow-hidden
+    py-32
+  "
+>
+
+
+  <!-- HEADER -->
+
+  <div
+    class="
+      px-5
+      md:px-10
+      max-w-[1600px]
+      mx-auto
+      flex
+      justify-between
+      items-start
+      mb-28
+    "
+  >
+
+    <div>
+
+      <p
+        class="
+          text-[10px]
+          uppercase
+          tracking-[.25em]
+          text-black/40
+        "
+      >
+
+        02 / What I do
+
+      </p>
+
+    </div>
+
+
+    <span
+      class="
+        font-mono
+        text-[10px]
+        text-black/30
+      "
+    >
+
+      4 disciplines
+
+    </span>
+
+  </div>
+
+
+  <!-- SERVICE LIST -->
+
+  <div
+    id="service-list"
+    class="border-t border-black/15"
+  >
+
+
+    <!-- SERVICE 01 -->
+
+    <div
+      class="
+        service-row
+        group
+        border-b
+        border-black/15
+        px-5
+        md:px-10
+        py-12
+        md:py-16
+        flex
+        items-center
+        justify-between
+        gap-8
+        cursor-pointer
+      "
+    >
+
+      <div
+        class="
+          flex
+          items-start
+          gap-5
+        "
+      >
+
+        <span
+          class="
+            font-mono
+            text-xs
+            text-black/30
+          "
+        >
+          01
+        </span>
+
+        <h3
+          class="
+            service-word
+            font-semibold
+          "
+        >
+          LOGO
+        </h3>
+
+      </div>
+
+
+      <span
+        class="
+          hidden
+          md:block
+          text-xs
+          uppercase
+          tracking-[.2em]
+          text-black/40
+        "
+      >
+
+        Identity
+
+      </span>
+
+
+      <span
+        class="
+          text-4xl
+          group-hover:rotate-45
+          transition-transform
+        "
+      >
+
+        ↗
+
+      </span>
+
+    </div>
+
+
+    <!-- SERVICE 02 -->
+
+    <div
+      class="
+        service-row
+        group
+        border-b
+        border-black/15
+        px-5
+        md:px-10
+        py-12
+        md:py-16
+        flex
+        items-center
+        justify-between
+        gap-8
+        cursor-pointer
+      "
+    >
+
+      <div
+        class="
+          flex
+          items-start
+          gap-5
+        "
+      >
+
+        <span
+          class="
+            font-mono
+            text-xs
+            text-black/30
+          "
+        >
+          02
+        </span>
+
+        <h3
+          class="
+            service-word
+            font-semibold
+          "
+        >
+          GRAPHICS
+        </h3>
+
+      </div>
+
+
+      <span
+        class="
+          hidden
+          md:block
+          text-xs
+          uppercase
+          tracking-[.2em]
+          text-black/40
+        "
+      >
+
+        Visual systems
+
+      </span>
+
+
+      <span
+        class="
+          text-4xl
+          group-hover:rotate-45
+          transition-transform
+        "
+      >
+
+        ↗
+
+      </span>
+
+    </div>
+
+
+    <!-- SERVICE 03 -->
+
+    <div
+      class="
+        service-row
+        group
+        border-b
+        border-black/15
+        px-5
+        md:px-10
+        py-12
+        md:py-16
+        flex
+        items-center
+        justify-between
+        gap-8
+        cursor-pointer
+      "
+    >
+
+      <div
+        class="
+          flex
+          items-start
+          gap-5
+        "
+      >
+
+        <span
+          class="
+            font-mono
+            text-xs
+            text-black/30
+          "
+        >
+          03
+        </span>
+
+        <h3
+          class="
+            service-word
+            font-semibold
+          "
+        >
+          WEB
+        </h3>
+
+      </div>
+
+
+      <span
+        class="
+          hidden
+          md:block
+          text-xs
+          uppercase
+          tracking-[.2em]
+          text-black/40
+        "
+      >
+
+        Development
+
+      </span>
+
+
+      <span
+        class="
+          text-4xl
+          group-hover:rotate-45
+          transition-transform
+        "
+      >
+
+        ↗
+
+      </span>
+
+    </div>
+
+
+    <!-- SERVICE 04 -->
+
+    <div
+      class="
+        service-row
+        group
+        border-b
+        border-black/15
+        px-5
+        md:px-10
+        py-12
+        md:py-16
+        flex
+        items-center
+        justify-between
+        gap-8
+        cursor-pointer
+      "
+    >
+
+      <div
+        class="
+          flex
+          items-start
+          gap-5
+        "
+      >
+
+        <span
+          class="
+            font-mono
+            text-xs
+            text-black/30
+          "
+        >
+          04
+        </span>
+
+        <h3
+          class="
+            service-word
+            font-semibold
+          "
+        >
+          GROWTH
+        </h3>
+
+      </div>
+
+
+      <span
+        class="
+          hidden
+          md:block
+          text-xs
+          uppercase
+          tracking-[.2em]
+          text-black/40
+        "
+      >
+
+        Digital marketing
+
+      </span>
+
+
+      <span
+        class="
+          text-4xl
+          group-hover:rotate-45
+          transition-transform
+        "
+      >
+
+        ↗
+
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 03 — WORK
+====================================================== -->
+
+<section
+  id="work"
+  class="
+    relative
+    min-h-screen
+    bg-black
+    py-32
+    overflow-hidden
+  "
+>
+
+
+  <div
+    class="
+      max-w-[1600px]
+      mx-auto
+      px-5
+      md:px-10
+    "
+  >
+
+
+    <!-- HEADER -->
+
+    <div
+      class="
+        flex
+        justify-between
+        items-end
+        mb-24
+      "
+    >
+
+      <div>
+
+        <p
+          class="
+            text-[10px]
+            uppercase
+            tracking-[.25em]
+            text-green
+            mb-6
+          "
+        >
+
+          03 / Selected work
+
+        </p>
+
+
+        <h2
+          class="
+            text-6xl
+            md:text-8xl
+            font-semibold
+            tracking-[-.07em]
+            leading-none
+          "
+        >
+
+          WORK<span class="text-red">.</span>
+
+        </h2>
+
+      </div>
+
+
+      <span
+        class="
+          hidden
+          md:block
+          font-mono
+          text-xs
+          text-white/25
+        "
+      >
+
+        2024 — 2026
+
+      </span>
+
+    </div>
+
+
+
+    <!-- PROJECT GRID -->
+
+    <div
+      class="
+        grid
+        md:grid-cols-12
+        gap-6
+      "
+    >
+
+
+      <!-- PROJECT ONE -->
+
+      <article
+        class="
+          project
+          md:col-span-8
+          group
+        "
+      >
+
+        <div
+          class="
+            project-visual
+            relative
+            aspect-[1.25/1]
+            overflow-hidden
+            border
+            border-white/10
+          "
+        >
+
+          <div
+            class="
+              absolute
+              inset-0
+              flex
+              items-center
+              justify-center
+            "
+          >
+
+            <div
+              class="
+                project-shape
+                w-40
+                h-40
+                md:w-64
+                md:h-64
+                rounded-full
+                border-[1px]
+                border-red/50
+              "
+            ></div>
+
+          </div>
+
+
+          <div
+            class="
+              absolute
+              top-6
+              left-6
+              font-mono
+              text-[10px]
+              text-white/30
+            "
+          >
+
+            PROJECT / 001
+
+          </div>
+
+
+          <div
+            class="
+              absolute
+              bottom-6
+              left-6
+              text-xs
+              uppercase
+              tracking-[.2em]
+            "
+          >
+
+            Brand identity
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="
+            mt-5
+            flex
+            justify-between
+            items-start
+          "
+        >
+
+          <h3
+            class="
+              text-2xl
+              md:text-4xl
+              font-medium
+              tracking-tight
+            "
+          >
+
+            VOID / 01
+
+          </h3>
+
+
+          <span
+            class="text-white/30"
+          >
+            ↗
+          </span>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- PROJECT TWO -->
+
+      <article
+        class="
+          project
+          md:col-span-4
+          md:mt-40
+          group
+        "
+      >
+
+        <div
+          class="
+            relative
+            aspect-[.8/1]
+            overflow-hidden
+            border
+            border-white/10
+            bg-[#111]
+          "
+        >
+
+          <div
+            class="
+              absolute
+              inset-0
+              bg-gradient-to-br
+              from-green/20
+              via-transparent
+              to-transparent
+            "
+          ></div>
+
+
+          <div
+            class="
+              absolute
+              w-48
+              h-48
+              rounded-full
+              bg-green
+              blur-[90px]
+              opacity-20
+              top-1/2
+              left-1/2
+              -translate-x-1/2
+              -translate-y-1/2
+            "
+          ></div>
+
+
+          <div
+            class="
+              absolute
+              top-6
+              left-6
+              font-mono
+              text-[10px]
+              text-white/30
+            "
+          >
+
+            PROJECT / 002
+
+          </div>
+
+
+          <div
+            class="
+              absolute
+              bottom-6
+              left-6
+              text-xs
+              uppercase
+              tracking-[.2em]
+            "
+          >
+
+            Web development
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="
+            mt-5
+            flex
+            justify-between
+          "
+        >
+
+          <h3
+            class="
+              text-2xl
+              md:text-3xl
+            "
+          >
+
+            NEXA
+
+          </h3>
+
+          <span class="text-white/30">
+            ↗
+          </span>
+
+        </div>
+
+      </article>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 04 — ABOUT
+====================================================== -->
+
+<section
+  id="about"
+  class="
+    relative
+    min-h-screen
+    bg-[#101010]
+    py-32
+    overflow-hidden
+  "
+>
+
+
+  <!-- GIANT TEXT -->
+
+  <div
+    class="
+      absolute
+      top-1/2
+      left-0
+      -translate-y-1/2
+      whitespace-nowrap
+      text-[30vw]
+      font-bold
+      tracking-[-.1em]
+      text-white/[.025]
+      select-none
+    "
+  >
+
+    CREATE
+
+  </div>
+
+
+  <div
+    class="
+      relative
+      z-10
+      max-w-[1600px]
+      mx-auto
+      px-5
+      md:px-10
+    "
+  >
+
+
+    <div
+      class="
+        grid
+        lg:grid-cols-12
+        gap-16
+      "
+    >
+
+
+      <!-- LEFT -->
+
+      <div
+        class="
+          lg:col-span-4
+        "
+      >
+
+        <p
+          class="
+            text-[10px]
+            uppercase
+            tracking-[.25em]
+            text-red
+            mb-8
+          "
+        >
+
+          04 / About Deepak
+
+        </p>
+
+
+        <div
+          class="
+            w-28
+            h-28
+            md:w-40
+            md:h-40
+            rounded-full
+            bg-white
+            text-black
+            flex
+            items-center
+            justify-center
+            text-5xl
+            font-bold
+          "
+        >
+
+          D
+
+        </div>
+
+      </div>
+
+
+      <!-- RIGHT -->
+
+      <div
+        class="
+          lg:col-span-8
+        "
+      >
+
+        <h2
+          class="
+            text-5xl
+            md:text-7xl
+            lg:text-[7vw]
+            leading-[.9]
+            tracking-[-.07em]
+            font-medium
+          "
+        >
+
+          DESIGN
+          <span class="text-white/20">
+            ISN'T
+          </span>
+
+          <br>
+
+          DECORATION.
+
+        </h2>
+
+
+        <div
+          class="
+            mt-16
+            grid
+            md:grid-cols-2
+            gap-12
+          "
+        >
+
+          <p
+            class="
+              text-lg
+              md:text-xl
+              leading-relaxed
+              text-white/45
+            "
+          >
+
+            I'm Deepak — a creative designer and
+            developer focused on building identities,
+            digital experiences and growth systems
+            that make businesses easier to remember.
+
+          </p>
+
+
+          <p
+            class="
+              text-lg
+              md:text-xl
+              leading-relaxed
+              text-white/45
+            "
+          >
+
+            From the first sketch of a logo to the
+            final line of code and the campaign that
+            brings people through the door — I work
+            across the entire digital experience.
+
+          </p>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div
+          class="
+            mt-20
+            grid
+            grid-cols-3
+            border-t
+            border-white/10
+          "
+        >
+
+          <div class="py-7 border-r border-white/10">
+
+            <span
+              class="
+                block
+                text-4xl
+                md:text-6xl
+                font-medium
+              "
+            >
+              04
+            </span>
+
+            <span
+              class="
+                text-[10px]
+                uppercase
+                tracking-[.2em]
+                text-white/25
+              "
+            >
+              disciplines
+            </span>
+
+          </div>
+
+
+          <div
+            class="
+              py-7
+              px-5
+              border-r
+              border-white/10
+            "
+          >
+
+            <span
+              class="
+                block
+                text-4xl
+                md:text-6xl
+                font-medium
+              "
+            >
+              ∞
+            </span>
+
+            <span
+              class="
+                text-[10px]
+                uppercase
+                tracking-[.2em]
+                text-white/25
+              "
+            >
+              ideas
+            </span>
+
+          </div>
+
+
+          <div class="py-7 px-5">
+
+            <span
+              class="
+                block
+                text-4xl
+                md:text-6xl
+                font-medium
+              "
+            >
+              01
+            </span>
+
+            <span
+              class="
+                text-[10px]
+                uppercase
+                tracking-[.2em]
+                text-white/25
+              "
+            >
+              vision
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 05 — CONTACT
+====================================================== -->
+
+<section
+  id="contact"
+  class="
+    relative
+    min-h-screen
+    bg-red
+    text-white
+    overflow-hidden
+    flex
+    items-center
+  "
+>
+
+
+  <!-- GIANT BACKGROUND -->
+
+  <div
+    class="
+      absolute
+      -bottom-20
+      -left-10
+      text-[40vw]
+      font-bold
+      leading-none
+      tracking-[-.12em]
+      text-black/[.08]
+      select-none
+    "
+  >
+
+    05
+
+  </div>
+
+
+  <div
+    class="
+      relative
+      z-10
+      max-w-[1600px]
+      mx-auto
+      w-full
+      px-5
+      md:px-10
+      py-32
+    "
+  >
+
+
+    <div
+      class="
+        flex
+        flex-col
+        justify-between
+        min-h-[70vh]
+      "
+    >
+
+
+      <div>
+
+        <p
+          class="
+            text-[10px]
+            uppercase
+            tracking-[.25em]
+            text-white/60
+            mb-10
+          "
+        >
+
+          05 / Start something
+
+        </p>
+
+
+        <h2
+          class="
+            text-[17vw]
+            md:text-[14vw]
+            lg:text-[12vw]
+            font-bold
+            tracking-[-.1em]
+            leading-[.75]
+          "
+        >
+
+          LET'S
+
+          <br>
+
+          MAKE
+
+          <br>
+
+          <span class="text-black">
+
+            NOISE.
+
+          </span>
+
+        </h2>
+
+      </div>
+
+
+      <!-- CONTACT BUTTON -->
+
+      <div
+        class="
+          flex
+          flex-col
+          md:flex-row
+          md:items-end
+          justify-between
+          gap-10
+          mt-20
+        "
+      >
+
+        <div>
+
+          <p
+            class="
+              text-sm
+              text-white/60
+              mb-3
+            "
+          >
+
+            Have a project in mind?
+
+          </p>
+
+
+          <a
+            href="mailto:hello@example.com"
+            class="
+              magnetic
+              text-xl
+              md:text-2xl
+              border-b
+              border-white/40
+              pb-2
+            "
+          >
+
+            hello@example.com
+
+          </a>
+
+        </div>
+
+
+        <a
+          href="mailto:hello@example.com"
+          class="
+            magnetic
+            w-28
+            h-28
+            md:w-40
+            md:h-40
+            rounded-full
+            bg-black
+            flex
+            items-center
+            justify-center
+            text-white
+            text-xs
+            uppercase
+            tracking-[.2em]
+            hover:scale-105
+            transition
+          "
+        >
+
+          Contact
+          <br>
+          Deepak
+
+        </a>
+
+      </div>
+
+
+      <!-- FOOTER -->
+
+      <footer
+        class="
+          pt-10
+          mt-20
+          border-t
+          border-white/20
+          flex
+          flex-col
+          md:flex-row
+          justify-between
+          gap-5
+          text-[10px]
+          uppercase
+          tracking-[.2em]
+          text-white/50
+        "
+      >
+
+        <span>
+          Deepak © 2026
+        </span>
+
+        <span>
+          Design / Development / Growth
+        </span>
+
+        <span>
+          India
+        </span>
+
+      </footer>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+</main>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT / GSAP
+====================================================== -->
+
+<script>
+
+  gsap.registerPlugin(ScrollTrigger);
+
+
+
+  /* =====================================================
+     CUSTOM CURSOR
+  ====================================================== */
+
+  const cursor = document.querySelector(".cursor");
+
+  window.addEventListener("mousemove", (event) => {
+
+    gsap.to(cursor, {
+
+      x: event.clientX,
+
+      y: event.clientY,
+
+      duration: .25,
+
+      ease: "power3.out"
+
+    });
+
+  });
+
+
+
+  /* =====================================================
+     HERO INTRO
+  ====================================================== */
+
+  const heroTimeline = gsap.timeline({
+
+    defaults: {
+
+      ease: "power4.out"
+
+    }
+
+  });
+
+
+  heroTimeline
+
+    .from("#nav", {
+
+      y: -30,
+
+      opacity: 0,
+
+      duration: 1
+
+    })
+
+    .from("#hero-title", {
+
+      yPercent: 120,
+
+      opacity: 0,
+
+      duration: 1.3
+
+    })
+
+    .from("#hero-subtitle", {
+
+      yPercent: 120,
+
+      opacity: 0,
+
+      duration: 1.2
+
+    }, "-=.9")
+
+    .from("#hero-circle", {
+
+      scale: 0,
+
+      rotation: -180,
+
+      opacity: 0,
+
+      duration: 1.2
+
+    }, "-=1")
+
+
+
+  /* =====================================================
+     HERO CIRCLE
+  ====================================================== */
+
+  gsap.to("#hero-circle", {
+
+    rotation: 360,
+
+    duration: 18,
+
+    repeat: -1,
+
+    ease: "none"
+
+  });
+
+
+
+  /* =====================================================
+     HERO PARALLAX
+  ====================================================== */
+
+  gsap.to("#hero-circle", {
+
+    y: 250,
+
+    x: -100,
+
+    ease: "none",
+
+    scrollTrigger: {
+
+      trigger: "#hero",
+
+      start: "top top",
+
+      end: "bottom top",
+
+      scrub: 1.5
+
+    }
+
+  });
+
+
+
+  /* =====================================================
+     SERVICE REVEALS
+  ====================================================== */
+
+  gsap.utils.toArray(".service-row").forEach((row, index) => {
+
+    gsap.from(row, {
+
+      y: 100,
+
+      opacity: 0,
+
+      duration: 1,
+
+      delay: index * .08,
+
+      ease: "power4.out",
+
+      scrollTrigger: {
+
+        trigger: row,
+
+        start: "top 90%",
+
+        toggleActions: "play none none reverse"
+
+      }
+
+    });
+
+
+    /* Hover movement */
+
+    row.addEventListener("mouseenter", () => {
+
+      gsap.to(row.querySelector(".service-word"), {
+
+        x: 20,
+
+        duration: .5,
+
+        ease: "power3.out"
+
+      });
+
+    });
+
+
+    row.addEventListener("mouseleave", () => {
+
+      gsap.to(row.querySelector(".service-word"), {
+
+        x: 0,
+
+        duration: .5,
+
+        ease: "power3.out"
+
+      });
+
+    });
+
+  });
+
+
+
+  /* =====================================================
+     PROJECT REVEAL
+  ====================================================== */
+
+  gsap.utils.toArray(".project").forEach((project, index) => {
+
+    gsap.from(project, {
+
+      y: 120,
+
+      opacity: 0,
+
+      duration: 1.3,
+
+      delay: index * .15,
+
+      ease: "power4.out",
+
+      scrollTrigger: {
+
+        trigger: project,
+
+        start: "top 85%"
+
+      }
+
+    });
+
+  });
+
+
+
+  /* =====================================================
+     PROJECT SHAPE
+  ====================================================== */
+
+  gsap.to(".project-shape", {
+
+    rotation: 360,
+
+    scale: 1.25,
+
+    duration: 8,
+
+    repeat: -1,
+
+    yoyo: true,
+
+    ease: "sine.inOut"
+
+  });
+
+
+
+  /* =====================================================
+     ABOUT TEXT
+  ====================================================== */
+
+  gsap.from("#about h2", {
+
+    y: 120,
+
+    opacity: 0,
+
+    duration: 1.4,
+
+    ease: "power4.out",
+
+    scrollTrigger: {
+
+      trigger: "#about",
+
+      start: "top 70%"
+
+    }
+
+  });
+
+
+
+  /* =====================================================
+     ABOUT PARAGRAPHS
+  ====================================================== */
+
+  gsap.from("#about p", {
+
+    y: 50,
+
+    opacity: 0,
+
+    stagger: .15,
+
+    duration: 1,
+
+    ease: "power3.out",
+
+    scrollTrigger: {
+
+      trigger: "#about",
+
+      start: "top 55%"
+
+    }
+
+  });
+
+
+
+  /* =====================================================
+     CONTACT TITLE
+  ====================================================== */
+
+  gsap.from("#contact h2", {
+
+    y: 180,
+
+    opacity: 0,
+
+    duration: 1.5,
+
+    ease: "power4.out",
+
+    scrollTrigger: {
+
+      trigger: "#contact",
+
+      start: "top 75%"
+
+    }
+
+  });
+
+
+
+  /* =====================================================
+     MAGNETIC ELEMENTS
+  ====================================================== */
+
+  document.querySelectorAll(".magnetic").forEach((element) => {
+
+
+    element.addEventListener("mousemove", (event) => {
+
+      const rect = element.getBoundingClientRect();
+
+
+      const x =
+        event.clientX -
+        rect.left -
+        rect.width / 2;
+
+
+      const y =
+        event.clientY -
+        rect.top -
+        rect.height / 2;
+
+
+      gsap.to(element, {
+
+        x: x * .18,
+
+        y: y * .18,
+
+        duration: .4,
+
+        ease: "power3.out"
+
+      });
+
+    });
+
+
+    element.addEventListener("mouseleave", () => {
+
+      gsap.to(element, {
+
+        x: 0,
+
+        y: 0,
+
+        duration: .7,
+
+        ease: "elastic.out(1,.4)"
+
+      });
+
+    });
+
+  });
+
+
+
+  /* =====================================================
+     NAV TRANSFORMATION
+  ====================================================== */
+
+  ScrollTrigger.create({
+
+    start: "top -100",
+
+    onEnter: () => {
+
+      gsap.to("#nav", {
+
+        scale: .97,
+
+        duration: .4
+
+      });
+
+    },
+
+    onLeaveBack: () => {
+
+      gsap.to("#nav", {
+
+        scale: 1,
+
+        duration: .4
+
+      });
+
+    }
+
+  });
+
+
+
+  /* =====================================================
+     SCROLL VELOCITY EFFECT
+  ====================================================== */
+
+  let currentScroll = 0;
+
+  let targetScroll = 0;
+
+
+  window.addEventListener("scroll", () => {
+
+    targetScroll = window.scrollY;
+
+  });
+
+
+  gsap.ticker.add(() => {
+
+    currentScroll +=
+      (targetScroll - currentScroll) * .08;
+
+
+    const velocity =
+      targetScroll - currentScroll;
+
+
+    gsap.to(".service-word", {
+
+      skewX: velocity * .02,
+
+      overwrite: true,
+
+      duration: .2
+
+    });
+
+  });
+
+
+
+  /* =====================================================
+     REDUCE MOTION ACCESSIBILITY
+  ====================================================== */
+
+  const reduceMotion =
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+
+  if (reduceMotion) {
+
+    gsap.globalTimeline.timeScale(0);
+
+  }
+
+</script>
+
+
+</body>
+</html>
